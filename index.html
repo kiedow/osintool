@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OSINT TOOL</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #000000;
+            font-family: 'Courier New', 'Fira Code', monospace;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 700px;
+            width: 100%;
+        }
+
+        /* ДЕРЗКИЙ ЗАГОЛОВОК */
+        .title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        .title h1 {
+            font-size: 4rem;
+            font-weight: 900;
+            color: #ff0000;
+            text-shadow: 0 0 10px #ff0000, 0 0 20px #990000, 4px 4px 0 #2a0000;
+            letter-spacing: -2px;
+            text-transform: uppercase;
+        }
+        .title p {
+            color: #aa2222;
+            font-size: 0.8rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        /* НЕОНОВЫЕ КНОПКИ-РАЗДЕЛЫ */
+        .neon-btn {
+            background: #050101;
+            border: 2px solid #ff0000;
+            padding: 1rem 2rem;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            box-shadow: 0 0 12px #ff0000, inset 0 0 4px #ff0000;
+            transition: 0.1s linear;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .neon-btn:hover {
+            background: #1a0202;
+            box-shadow: 0 0 24px #ff0000;
+            transform: translateY(-1px);
+        }
+        .neon-btn span:first-child {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: #ff4444;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+        .neon-btn span:last-child {
+            font-size: 1.5rem;
+            color: #ff0000;
+            font-weight: bold;
+        }
+
+        /* КОНТЕНТ */
+        .content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+            background: #030101;
+            border-left: 3px solid #ff0000;
+            margin-bottom: 1rem;
+        }
+        .content.open {
+            max-height: 1500px;
+            padding: 1.2rem;
+        }
+
+        /* МАНУАЛЫ - АККОРДЕОН */
+        .manual-item {
+            border-bottom: 1px solid #ff000030;
+            margin-bottom: 0.5rem;
+        }
+        .manual-question {
+            padding: 0.8rem;
+            color: #ff6666;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            background: #080101;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+        .manual-question:hover {
+            color: #ff9999;
+            background: #0f0303;
+        }
+        .manual-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s;
+            background: #020000;
+            padding: 0 0.8rem;
+            color: #bbbbbb;
+            line-height: 1.5;
+            font-size: 0.85rem;
+        }
+        .manual-answer.open {
+            max-height: 600px;
+            padding: 0.8rem;
+        }
+
+        .tool-item {
+            background: #080101;
+            padding: 0.6rem;
+            margin-bottom: 0.5rem;
+            border-left: 3px solid #ff0000;
+            color: #dddddd;
+        }
+
+        .creator {
+            text-align: center;
+            padding: 0.5rem;
+        }
+
+        hr {
+            border-color: #ff000030;
+            margin: 0.8rem 0;
+        }
+
+        code {
+            background: #1a0303;
+            padding: 2px 6px;
+            color: #ff8888;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 0.65rem;
+            color: #551111;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="title">
+        <h1>OSINT TOOL</h1>
+        <p>// OPEN SOURCE INTELLIGENCE //</p>
+    </div>
+
+    <!-- MANUALS -->
+    <div class="neon-btn" data-target="manuals">
+        <span>MANUALS</span>
+        <span>▼</span>
+    </div>
+    <div id="manuals" class="content">
+        <div class="manual-item">
+            <div class="manual-question">
+                <span>01. DOXING & SWATTING</span>
+                <span>[+]</span>
+            </div>
+            <div class="manual-answer">
+                <strong>DOXING</strong> — сбор личных данных из открытых источников.<br>
+                В 2025 году риск снижен: 80% атак — боты. Защита: VPN, 2FA, анонимные почты, менеджер паролей.<br><br>
+                <strong>SWATTING</strong> — ложный вызов полиции. Операторы отслеживают звонки, злоумышленников находят.<br>
+                → <a href="#" style="color:#ff6666;">подробнее</a>
+            </div>
+        </div>
+        <div class="manual-item">
+            <div class="manual-question">
+                <span>02. GOOGLE DORKS</span>
+                <span>[+]</span>
+            </div>
+            <div class="manual-answer">
+                <code>site:example.com filetype:pdf</code><br>
+                <code>intitle:"index of"</code><br>
+                <code>inurl:admin</code><br>
+                Только для публичных данных.
+            </div>
+        </div>
+        <div class="manual-item">
+            <div class="manual-question">
+                <span>03. VIN SEARCH</span>
+                <span>[+]</span>
+            </div>
+            <div class="manual-answer">
+                VIN — открытый номер авто. Позволяет узнать год, модель, двигатель, отзывные кампании через NHTSA, Vindecoderz.
+            </div>
+        </div>
+    </div>
+
+    <!-- TOOLS -->
+    <div class="neon-btn" data-target="tools">
+        <span>TOOLS</span>
+        <span>▼</span>
+    </div>
+    <div id="tools" class="content">
+        <div class="tool-item">GOOGLE DORKS // операторы поиска</div>
+        <div class="tool-item">EMAIL OSINT // Hunter, Holehe</div>
+        <div class="tool-item">USERNAME SEARCH // Sherlock, Maigret</div>
+        <div class="tool-item">VIN DECODE // NHTSA, Vindecoderz</div>
+        <div class="tool-item">GEOINT // ExifTool, Google Earth</div>
+        <hr>
+        <div style="color:#aa4444; font-size:0.7rem;">[!] ТОЛЬКО ПУБЛИЧНЫЕ ДАННЫЕ</div>
+    </div>
+
+    <!-- CREATOR -->
+    <div class="neon-btn" data-target="creator">
+        <span>CREATOR</span>
+        <span>▼</span>
+    </div>
+    <div id="creator" class="content">
+        <div class="creator">
+            <p><strong>OSINT ENGINEER</strong></p>
+            <p>Образовательный проект. Анализ открытых источников.</p>
+            <hr>
+            <p>contact: creator@osint.local</p>
+        </div>
+    </div>
+
+    <div class="footer">
+        DISCLAIMER: Только для ознакомления и анализа своих данных.
+    </div>
+</div>
+
+<script>
+    // открытие/закрытие секций
+    document.querySelectorAll('.neon-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const targetId = btn.getAttribute('data-target');
+            const content = document.getElementById(targetId);
+            if (content) {
+                content.classList.toggle('open');
+            }
+        });
+    });
+
+    // аккордеон внутри manuals
+    document.querySelectorAll('.manual-question').forEach(q => {
+        q.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const answer = q.parentElement.querySelector('.manual-answer');
+            const arrow = q.querySelector('span:last-child');
+            if (answer) {
+                answer.classList.toggle('open');
+                arrow.textContent = answer.classList.contains('open') ? '[-]' : '[+]';
+            }
+        });
+    });
+</script>
+</body>
+</html>
