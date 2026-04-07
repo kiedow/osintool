@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>OSINT TOOLS | Обучение и ресурсы</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #0a0a0a;
+            background-image: radial-gradient(circle at 25% 40%, rgba(255, 0, 0, 0.03) 0%, #0a0a0a 90%);
+            font-family: 'Segoe UI', 'Courier New', 'Fira Code', monospace;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem 1rem;
+        }
+
+        /* Главный контейнер */
+        .site-container {
+            max-width: 1300px;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.65);
+            backdrop-filter: blur(2px);
+            border-radius: 2.5rem;
+            padding: 2rem 2rem 3rem;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.15);
+            border: 1px solid rgba(255, 0, 0, 0.2);
+        }
+
+        /* ЗАГОЛОВОК OSINT TOOLS */
+        .glow-title {
+            text-align: center;
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 800;
+            letter-spacing: 4px;
+            color: #ff1a1a;
+            text-shadow: 0 0 8px #ff0000, 0 0 18px #aa0000, 0 0 28px rgba(255, 0, 0, 0.5);
+            margin-bottom: 3rem;
+            word-break: keep-all;
+            background: linear-gradient(135deg, #ff4d4d, #b30000);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            text-shadow: none;
+        }
+        /* добавим альтернативно яркий вариант для заголовка, чтоб было читаемо */
+        .glow-title {
+            color: #ff1a1a;
+            text-shadow: 0 0 5px #ff3b3b;
+        }
+
+        /* Панель кнопок (горизонтальный ряд) */
+        .button-panel {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Каждая кнопка + контейнер выпадающего окна */
+        .btn-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        /* неоново-красные кнопки */
+        .neon-btn {
+            background: #1a0a0a;
+            border: 2px solid #ff1a1a;
+            color: #ff4d4d;
+            font-size: 1.8rem;
+            font-weight: bold;
+            font-family: monospace;
+            padding: 0.8rem 2rem;
+            min-width: 180px;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            backdrop-filter: blur(4px);
+            box-shadow: 0 0 8px rgba(255, 0, 0, 0.4);
+            text-align: center;
+        }
+
+        .neon-btn:hover {
+            background: #ff1a1a20;
+            box-shadow: 0 0 18px #ff1a1a, 0 0 8px #ff0000;
+            color: #ff9999;
+            transform: scale(1.02);
+            border-color: #ff4d4d;
+        }
+
+        /* выпадающее окно, привязанное к кнопке */
+        .dropdown-panel {
+            position: absolute;
+            top: calc(100% + 16px);
+            left: 0;
+            width: 460px;
+            max-width: 85vw;
+            background: #0c0c0c; /* чуть темнее кнопки (кнопка #1a0a0a) */
+            border-left: 4px solid #ff1a1a;
+            border-radius: 20px;
+            padding: 1.4rem 1.4rem;
+            color: #e0e0e0;
+            font-family: 'Segoe UI', system-ui, monospace;
+            box-shadow: 0 20px 35px rgba(0,0,0,0.7), 0 0 0 1px #ff1a1a30;
+            backdrop-filter: blur(12px);
+            z-index: 200;
+            transition: 0.2s;
+            line-height: 1.45;
+            font-size: 0.95rem;
+            pointer-events: auto;
+            display: none;
+        }
+
+        /* активное окно */
+        .dropdown-panel.open {
+            display: block;
+        }
+
+        /* стрелка-треугольник сверху окна */
+        .dropdown-panel::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 24px;
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 10px solid #0c0c0c;
+            filter: drop-shadow(0 -2px 1px rgba(255,0,0,0.3));
+        }
+
+        /* Стили для списка мануалов */
+        .manuals-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        .manuals-list li {
+            margin-bottom: 1.2rem;
+            border-bottom: 1px solid #2a1a1a;
+            padding-bottom: 0.8rem;
+        }
+        .manuals-list li strong {
+            color: #ff6666;
+            font-size: 1.1rem;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .article-text {
+            color: #cccccc;
+            margin-top: 6px;
+            white-space: pre-wrap;
+        }
+        .info-link {
+            color: #ff4d4d;
+            text-decoration: none;
+            border-bottom: 1px dashed #ff4d4d;
+        }
+        .info-link:hover {
+            color: #ff9999;
+        }
+
+        /* для тулза и криэйтор — простой текст */
+        .tools-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .tool-item {
+            background: #111;
+            padding: 8px 12px;
+            border-radius: 14px;
+            border-left: 3px solid #ff1a1a;
+        }
+
+        .creator-card {
+            text-align: center;
+        }
+
+        hr {
+            border-color: #ff1a1a30;
+            margin: 12px 0;
+        }
+
+        /* мобильная адаптация */
+        @media (max-width: 700px) {
+            .site-container {
+                padding: 1rem;
+            }
+            .neon-btn {
+                font-size: 1.2rem;
+                padding: 0.5rem 1rem;
+                min-width: 130px;
+            }
+            .dropdown-panel {
+                width: 86vw;
+                left: -10px;
+            }
+            .dropdown-panel::before {
+                left: 20px;
+            }
+        }
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            font-size: 0.7rem;
+            color: #662222;
+        }
+    </style>
+</head>
+<body>
+<div class="site-container">
+    <div class="glow-title">OSINT TOOLS</div>
+
+    <div class="button-panel">
+        <!-- manuals -->
+        <div class="btn-wrapper" id="wrapper-manuals">
+            <button class="neon-btn" data-target="manuals">📘 MANUALS</button>
+            <div id="dropdown-manuals" class="dropdown-panel">
+                <ul class="manuals-list">
+                    <li>
+                        <strong>1) Докс и сват: почему не стоит бояться</strong>
+                        <div class="article-text">
+                            Поговорим о том, почему не стоит бояться доксинга и сваттинга, а также как защититься.<br><br>
+                            <strong>Доксинг</strong> — слово звучит страшно, но в 2025 году бояться почти не стоит. 80% тех, кто пытается доксить, используют ботов и реально ничего не умеют. Если вы знаете базовые правила безопасности, угрозы минимальны.<br><br>
+                            Доксинг — это когда кто-то пытается получить ваши личные данные: адрес, телефон, фото. Раньше это реально могло создавать проблемы. Сейчас почти все соцсети и сервисы прячут ваши данные, а законы о защите информации стали жёстче. Утечки перестают быть критичными.<br><br>
+                            <strong>Как защититься:</strong><br>
+                            • VPN скрывает реальное местоположение;<br>
+                            • Двухфакторная аутентификация (2FA) спасает аккаунт даже если пароль утёк;<br>
+                            • Анонимные почты и приватные аккаунты делают вас «невидимкой»;<br>
+                            • Менеджер паролей помогает создавать сложные уникальные пароли для всех сервисов.<br><br>
+                            <strong>Сваттинг</strong> — это когда кто-то вызывает полицию по вашему адресу. Раньше это было реально опасно. Сейчас полиция отслеживает звонки и координаты, ложные вызовы фиксируются, и злоумышленники получают уголовные дела. Не публикуйте точный адрес, выключайте геометки, используйте PO Box для посылок.<br><br>
+                            <strong>Цифровая гигиена работает лучше, если вы:</strong><br>
+                            • Регулярно обновляйте ПО/устройства;<br>
+                            • Проверяйте настройки приватности;<br>
+                            • Не делитесь лишней личной информацией;<br>
+                            • Следите за утечками данных через сервисы типа Have I Been Pwned.<br>
+                            Если делаете это — практически никто не сможет вас «поймать» онлайн.<br><br>
+                            В 2025 году интернет стал безопаснее для многих. Контроль над своими данными, понимание угроз и простые меры безопасности делают вас почти невидимым для доксеров и сваттеров. Страшного ничего нет — важно просто действовать умно.<br><br>
+                            📖 Прочитав данную маленькую статью можно понять почему не стоит бояться угроз и как обеспечить минимальную защиту. Более подробную информацию можно прочитать на сайте - <a href="#" class="info-link" target="_blank">ваш-ссылка-тут</a> (добавьте актуальный link).
+                        </div>
+                    </li>
+                    <li>
+                        <strong>2) Google Dorks для начинающих</strong>
+                        <div class="article-text">
+                            Google Dorks — это операторы поиска, которые помогают находить публичную информацию.<br>
+                            • <code>site:example.com filetype:pdf</code> — поиск PDF на сайте<br>
+                            • <code>intitle:"index of" "backup"</code> — открытые директории<br>
+                            • <code>inurl:login</code> — страницы входа<br>
+                            Все операторы работают только с общедоступными данными. Используйте эти знания для аудита своих ресурсов или исследований в рамках закона.
+                        </div>
+                    </li>
+                    <li>
+                        <strong>3) Поиск по VIN (базовые принципы)</strong>
+                        <div class="article-text">
+                            VIN — открытый идентификатор автомобиля. С его помощью можно узнать комплектацию, год выпуска, страну сборки, отзывные кампании, а через легальные сервисы (Carfax, AutoCheck) — историю ДТП. <br>
+                            ⚠️ Не пытайтесь взламывать государственные базы — это незаконно. Используйте открытые API и официальные отчёты.
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- tools -->
+        <div class="btn-wrapper" id="wrapper-tools">
+            <button class="neon-btn" data-target="tools">🔧 TOOLS</button>
+            <div id="dropdown-tools" class="dropdown-panel">
+                <div class="tools-grid">
+                    <div class="tool-item">🌐 <strong>Google Dorks Cheatsheet</strong> — операторы site:, intitle:, inurl:, filetype:</div>
+                    <div class="tool-item">📧 <strong>Email Recon</strong> — Hunter.io, Holehe, Emailrep.io</div>
+                    <div class="tool-item">🕵️ <strong>Username search</strong> — Whatsmyname, Sherlock, Maigret</div>
+                    <div class="tool-item">🚗 <strong>VIN decoding</strong> — NHTSA, Vindecoderz (бесплатные базы)</div>
+                    <div class="tool-item">🗺️ <strong>GeoINT</strong> — ExifTool, Pic2Map, Google Earth</div>
+                    <div class="tool-item">📁 <strong>Archive & pastebin</strong> — Wayback Machine, PSBDMP, OSINT framework</div>
+                </div>
+                <hr>
+                <div style="font-size:0.8rem; color:#aa5555">* Только публичные источники, соблюдайте законы вашей страны.</div>
+            </div>
+        </div>
+
+        <!-- creator -->
+        <div class="btn-wrapper" id="wrapper-creator">
+            <button class="neon-btn" data-target="creator">👤 CREATOR</button>
+            <div id="dropdown-creator" class="dropdown-panel">
+                <div class="creator-card">
+                    <p style="font-size:1.3rem; margin-bottom:8px;">🛡️ OSINT-энтузиаст</p>
+                    <p>Сайт создан в образовательных и вспомогательных целях.<br>
+                    Помогаю новичкам понять основы цифровой гигиены,<br>
+                    этичный OSINT и работу с открытыми источниками.</p>
+                    <hr>
+                    <p>📬 Контакт (для связи): <span style="color:#ff7777">creator@osint-tools.example</span><br>
+                    🔗 Больше материалов: <a href="#" class="info-link">t.me/osint_guide</a> (пример)</p>
+                    <p style="margin-top:12px; font-size:0.75rem;">Версия 1.0 | Не для незаконной деятельности</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        ⚠️ Все мануалы и инструменты предназначены ТОЛЬКО для ознакомления, анализа своих данных и общедоступных источников.
+    </footer>
+</div>
+
+<script>
+    // Логика открытия/закрытия окон: привязанных к каждой кнопке
+    // Также закрытие при клике вне окна.
+
+    const wrappers = [
+        { btnWrapper: document.getElementById('wrapper-manuals'), dropdown: document.getElementById('dropdown-manuals') },
+        { btnWrapper: document.getElementById('wrapper-tools'), dropdown: document.getElementById('dropdown-tools') },
+        { btnWrapper: document.getElementById('wrapper-creator'), dropdown: document.getElementById('dropdown-creator') }
+    ];
+
+    // функция закрыть все дропдауны
+    function closeAllDropdowns() {
+        wrappers.forEach(w => {
+            if (w.dropdown) w.dropdown.classList.remove('open');
+        });
+    }
+
+    // привязываем обработчики к кнопкам
+    wrappers.forEach(wrapperItem => {
+        const button = wrapperItem.btnWrapper?.querySelector('.neon-btn');
+        const dropdown = wrapperItem.dropdown;
+        if (!button || !dropdown) return;
+
+        button.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isOpen = dropdown.classList.contains('open');
+            closeAllDropdowns();
+            if (!isOpen) {
+                dropdown.classList.add('open');
+            }
+        });
+    });
+
+    // клик вне всех окон — закрывает всё
+    document.addEventListener('click', function(event) {
+        let clickedInsideAny = false;
+        for (let w of wrappers) {
+            if (w.btnWrapper && w.btnWrapper.contains(event.target)) {
+                clickedInsideAny = true;
+                break;
+            }
+            if (w.dropdown && w.dropdown.contains(event.target)) {
+                clickedInsideAny = true;
+                break;
+            }
+        }
+        if (!clickedInsideAny) {
+            closeAllDropdowns();
+        }
+    });
+
+    // закрыть по ESC
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            closeAllDropdowns();
+        }
+    });
+
+    // небольшая поправка для мобильных - при открытии нового окна удобно
+    // также предотвращаем всплытие клика с дропдауна
+    wrappers.forEach(w => {
+        if (w.dropdown) {
+            w.dropdown.addEventListener('click', (e) => e.stopPropagation());
+        }
+    });
+</script>
+</body>
+</html>
