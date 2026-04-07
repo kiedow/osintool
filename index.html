@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Неоновые языки программирования | Сияние кода</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0a0f1e 0%, #0b1a2e 100%);
+            min-height: 100vh;
+            color: #fff;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Заголовок — упрощённая анимация (не лагает) */
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 60px;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: #00f3ff;
+            text-shadow: 0 0 10px #00f3ff, 0 0 20px #00f3ff;
+            position: relative;
+        }
+
+        /* Желтая обводка для заголовка */
+        h1::after {
+            content: 'ПОПУЛЯРНЫЕ ЯЗЫКИ ПРОГРАММИРОВАНИЯ';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            color: transparent;
+            -webkit-text-stroke: 1.5px #ffff00;
+            text-shadow: 0 0 10px rgba(255, 255, 0, 0.4);
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        /* Сетка карточек */
+        .languages-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+            margin-top: 40px;
+        }
+
+        /* Карточка — БЕЗ blur и тяжёлых теней */
+        .language-card {
+            background: rgba(10, 20, 40, 0.85);
+            border: 2px solid #00f3ff;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        /* Желтая обводка при наведении (на телефоне неактуально, но пусть будет) */
+        .language-card:active {
+            border-color: #ffff00;
+            box-shadow: 0 0 20px rgba(255, 255, 0, 0.3);
+        }
+
+        /* Контейнер для иконки */
+        .icon-container {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 50%;
+            border: 1.5px solid #00f3ff;
+            padding: 12px;
+        }
+
+        .icon-container svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 0 5px #00f3ff);
+        }
+
+        /* Название языка */
+        h2 {
+            text-align: center;
+            font-size: 1.8rem;
+            margin-bottom: 12px;
+            color: #00f3ff;
+            text-shadow: 0 0 5px rgba(0, 243, 255, 0.5);
+        }
+
+        /* Краткое описание */
+        .short-desc {
+            color: #ddd;
+            line-height: 1.5;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+            border-left: 3px solid #00f3ff;
+            padding-left: 12px;
+        }
+
+        /* Полное описание (скрыто) */
+        .full-description {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+            opacity: 0;
+            margin-top: 0;
+            color: #ccc;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .full-description.show {
+            max-height: 900px;
+            opacity: 1;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(0, 243, 255, 0.3);
+        }
+
+        .full-description p {
+            margin-bottom: 10px;
+        }
+
+        .full-description strong {
+            color: #00f3ff;
+        }
+
+        /* Кнопка раскрытия — простая и быстрая */
+        .toggle-btn {
+            background: rgba(0, 243, 255, 0.2);
+            border: 1px solid #00f3ff;
+            color: #00f3ff;
+            padding: 8px 18px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            margin-top: 12px;
+            display: inline-block;
+            width: 100%;
+            text-align: center;
+            transition: 0.15s ease;
+        }
+
+        .toggle-btn:active {
+            background: #00f3ff;
+            color: #0a0f1e;
+        }
+
+        /* Секция ссылок — БЕЗ blur */
+        .resources-section {
+            margin-top: 50px;
+            padding: 25px 15px 15px;
+            border-top: 2px solid rgba(0, 243, 255, 0.4);
+            border-radius: 15px;
+            background: rgba(5, 10, 20, 0.7);
+        }
+
+        .resources-title {
+            text-align: center;
+            font-size: 1.6rem;
+            margin-bottom: 25px;
+            color: #ffff66;
+            text-shadow: 0 0 8px #ffaa00;
+            letter-spacing: 1px;
+        }
+
+        .links-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .resource-link {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid #00f3ff;
+            border-radius: 40px;
+            padding: 10px 22px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .resource-link span {
+            color: #00f3ff;
+        }
+
+        .resource-link:active {
+            border-color: #ffff00;
+            background: rgba(0, 243, 255, 0.1);
+        }
+
+        /* Неоновые линии (оставим для стиля, они лёгкие) */
+        .neon-border {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00f3ff, #ffff00, #00f3ff, transparent);
+            box-shadow: 0 0 10px #00f3ff;
+            z-index: 1000;
+        }
+
+        .neon-border.bottom {
+            top: auto;
+            bottom: 0;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 35px;
+            font-size: 0.7rem;
+            color: #6688aa;
+        }
+
+        /* Планшеты и выше — возвращаем две колонки */
+        @media (min-width: 768px) {
+            .languages-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 30px;
+            }
+            h1 {
+                font-size: 3.5rem;
+            }
+            .toggle-btn {
+                width: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="neon-border"></div>
+    <div class="neon-border bottom"></div>
+
+    <div class="container">
+        <h1>ПОПУЛЯРНЫЕ ЯЗЫКИ ПРОГРАММИРОВАНИЯ</h1>
+        
+        <div class="languages-grid">
+            <!-- Python -->
+            <div class="language-card" data-lang="python">
+                <div class="icon-container">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5c0 .28-.22.5-.5.5h-3c-.28 0-.5-.22-.5-.5v-9c0-.28.22-.5.5-.5h3c.28 0 .5.22.5.5v9zm6 0c0 .28-.22.5-.5.5h-3c-.28 0-.5-.22-.5-.5v-9c0-.28.22-.5.5-.5h3c.28 0 .5.22.5.5v9z" fill="#00f3ff"/>
+                    </svg>
+                </div>
+                <h2>Python</h2>
+                <div class="short-desc">✨ Высокоуровневый язык с простым синтаксисом.</div>
+                <div class="full-description">
+                    <p><strong>Python</strong> — интерпретируемый, объектно-ориентированный язык, созданный Гвидо ван Россумом.</p>
+                    <p><strong>Области:</strong> Веб-разработка (Django, Flask), Data Science, машинное обучение (TensorFlow, PyTorch), автоматизация, научные вычисления, бэкенд-сервисы, разработка игр, AI.</p>
+                    <p><strong>Особенности:</strong> Динамическая типизация, автоматическое управление памятью, кроссплатформенность, огромная экосистема библиотек.</p>
+                    <p><strong>Где используется:</strong> NASA, Google, Instagram, Spotify, YouTube.</p>
+                </div>
+                <button class="toggle-btn" data-target="python">📘 Узнать подробнее</button>
+            </div>
+
+            <!-- Java -->
+            <div class="language-card" data-lang="java">
+                <div class="icon-container">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="10" stroke="#00f3ff" stroke-width="2"/>
+                        <path d="M8 8 L16 16 M16 8 L8 16" stroke="#00f3ff" stroke-width="2"/>
+                    </svg>
+                </div>
+                <h2>Java</h2>
+                <div class="short-desc">💎 Надёжный язык с принципом "Write Once, Run Anywhere".</div>
+                <div class="full-description">
+                    <p><strong>Java</strong> — строго типизированный язык на JVM. Миллионы устройств используют Java: от Android до серверов банков.</p>
+                    <p><strong>Сферы:</strong> Корпоративные системы, Android-разработка, веб-приложения (Spring), Big Data (Hadoop, Kafka), финансы, облачные сервисы.</p>
+                    <p><strong>Особенности:</strong> Строгая типизация, сборщик мусора, многопоточность, кроссплатформенность, безопасность.</p>
+                    <p><strong>Где используется:</strong> LinkedIn, Netflix, Amazon, Spotify, Twitter.</p>
+                </div>
+                <button class="toggle-btn" data-target="java">☕ Узнать подробнее</button>
+            </div>
+
+            <!-- JavaScript -->
+            <div class="language-card" data-lang="javascript">
+                <div class="icon-container">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3 3H21V21H3V3Z" stroke="#00f3ff" stroke-width="2"/>
+                        <path d="M9 12L12 15L15 12" stroke="#00f3ff" stroke-width="2"/>
+                    </svg>
+                </div>
+                <h2>JavaScript</h2>
+                <div class="short-desc">🚀 Язык веб-интерактивности. Работает везде.</div>
+                <div class="full-description">
+                    <p><strong>JavaScript</strong> — мультипарадигмальный язык, стандарт фронтенд-разработки. Работает в браузере и на сервере (Node.js).</p>
+                    <p><strong>Современное применение:</strong> Веб-сайты, SPA (React, Vue, Angular), серверная разработка, мобильные приложения (React Native), десктоп-приложения (Electron), игры, чат-боты.</p>
+                    <p><strong>Сильные стороны:</strong> Асинхронность, прототипное наследование, npm — крупнейший реестр библиотек.</p>
+                    <p><strong>Важно:</strong> ES6+ добавил классы, модули, стрелочные функции. Без JS нет современного интернета.</p>
+                </div>
+                <button class="toggle-btn" data-target="javascript">⚡ Узнать подробнее</button>
+            </div>
+
+            <!-- C++ -->
+            <div class="language-card" data-lang="cpp">
+                <div class="icon-container">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4 4L20 12L4 20V4Z" stroke="#00f3ff" stroke-width="2"/>
+                        <circle cx="12" cy="12" r="3" stroke="#00f3ff" stroke-width="2"/>
+                    </svg>
+                </div>
+                <h2>C++</h2>
+                <div class="short-desc">⚙️ Мощный компилируемый язык. Высокая производительность.</div>
+                <div class="full-description">
+                    <p><strong>C++</strong> — создан Бьёрном Страуструпом. Даёт полный контроль над памятью и аппаратными ресурсами.</p>
+                    <p><strong>Области:</strong> Игровые движки (Unreal Engine), ОС, высоконагруженные серверы, базы данных, встраиваемые системы, робототехника, компиляторы, браузеры.</p>
+                    <p><strong>Особенности:</strong> Ручное управление памятью, шаблоны, множественное наследование, RAII, перегрузка операторов.</p>
+                    <p><strong>Актуальность:</strong> Основа для систем реального времени, IoT и highload-проектов.</p>
+                </div>
+                <button class="toggle-btn" data-target="cpp">🔥 Узнать подробнее</button>
+            </div>
+        </div>
+
+        <!-- Ссылки -->
+        <div class="resources-section">
+            <div class="resources-title">🌐 Официальные ресурсы</div>
+            <div class="links-grid">
+                <a href="https://www.python.org/" class="resource-link" target="_blank" rel="noopener noreferrer"><span>🐍 Python.org</span></a>
+                <a href="https://www.java.com/ru/" class="resource-link" target="_blank" rel="noopener noreferrer"><span>☕ Java.com (RU)</span></a>
+                <a href="https://learn.javascript.ru/" class="resource-link" target="_blank" rel="noopener noreferrer"><span>📜 Современный JavaScript</span></a>
+                <a href="https://metanit.com/cpp/tutorial/" class="resource-link" target="_blank" rel="noopener noreferrer"><span>⚙️ C++ Metanit</span></a>
+            </div>
+            <footer>💡 Нажмите на кнопку, чтобы раскрыть информацию о языке.</footer>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.language-card').forEach(card => {
+            const btn = card.querySelector('.toggle-btn');
+            const fullDesc = card.querySelector('.full-description');
+            if (!btn || !fullDesc) return;
+            
+            btn.addEventListener('click', () => {
+                const isOpen = fullDesc.classList.contains('show');
+                if (isOpen) {
+                    fullDesc.classList.remove('show');
+                    btn.textContent = btn.textContent.includes('Python') ? '📘 Узнать подробнее' :
+                                      btn.textContent.includes('Java') ? '☕ Узнать подробнее' :
+                                      btn.textContent.includes('JavaScript') ? '⚡ Узнать подробнее' : '🔥 Узнать подробнее';
+                } else {
+                    fullDesc.classList.add('show');
+                    btn.textContent = '📖 Скрыть информацию';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
