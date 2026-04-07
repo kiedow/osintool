@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>OSINT TOOL | неоновый гид</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #000000;
+            background: radial-gradient(ellipse at 30% 20%, #0a0303 0%, #000000 100%);
+            font-family: 'Segoe UI', 'Inter', 'Fira Code', 'Courier New', monospace;
+            min-height: 100vh;
+            padding: 2rem 1.5rem;
+        }
+
+        /* главный контейнер — широкая колонка */
+        .container {
+            max-width: 750px;
+            margin: 0 auto;
+        }
+
+        /* ===== ХЕДЕР как на примере с Python (красивый, крупный) ===== */
+        .hero {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 1rem 0;
+        }
+        .main-title {
+            font-size: clamp(2.8rem, 12vw, 5rem);
+            font-weight: 800;
+            letter-spacing: 6px;
+            font-family: 'Segoe UI', 'Fira Code', monospace;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, #ff3a3a, #ff0000, #990000);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+            margin-bottom: 0.5rem;
+        }
+        .sub {
+            color: #aa3a3a;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-top: 1px solid #ff1a1a40;
+            display: inline-block;
+            padding-top: 8px;
+        }
+
+        /* ===== СЕКЦИИ (разделы) ===== */
+        .section {
+            margin-bottom: 2rem;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 2rem;
+            padding: 0.2rem;
+        }
+
+        /* заголовок раздела (как кнопка но крупнее) */
+        .section-header {
+            background: #080202;
+            border: 2px solid #ff1a1a;
+            border-radius: 60px;
+            padding: 1rem 1.8rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s;
+            box-shadow: 0 0 8px rgba(255, 26, 26, 0.3);
+        }
+        .section-header:hover {
+            background: #1f0a0a;
+            border-color: #ff5555;
+            box-shadow: 0 0 20px #ff1a1a;
+            transform: scale(1.01);
+        }
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #ff4d4d;
+            letter-spacing: 2px;
+            font-family: monospace;
+        }
+        .section-icon {
+            font-size: 2rem;
+            color: #ff3333;
+        }
+
+        /* выпадающий контент раздела (список мануалов/тулзов) */
+        .section-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out;
+            background: #030101;
+            margin-top: 0.8rem;
+            border-radius: 28px;
+            border-left: 3px solid #ff1a1a;
+            background: #050101e6;
+        }
+        .section-content.open {
+            max-height: 2000px; /* достаточно для всего */
+            transition: max-height 0.5s ease-in;
+            padding: 1.2rem 1rem;
+        }
+
+        /* стили списка мануалов (аккордеон внутри) */
+        .manuals-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+        .manual-item {
+            background: #0c0303;
+            border-radius: 20px;
+            border: 1px solid #ff1a1a30;
+            overflow: hidden;
+        }
+        .manual-question {
+            padding: 1rem 1.2rem;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: #ff8888;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #0f0404;
+            transition: 0.1s;
+            font-family: monospace;
+        }
+        .manual-question:hover {
+            background: #1f0a0a;
+            color: #ffaaaa;
+        }
+        .manual-question .arrow {
+            font-size: 1.3rem;
+            transition: transform 0.2s;
+            color: #ff4d4d;
+        }
+        .manual-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s ease-out;
+            padding: 0 1.2rem;
+            background: #030000;
+            border-top: 1px solid transparent;
+            color: #cecece;
+            line-height: 1.5;
+            font-size: 0.9rem;
+        }
+        .manual-answer.open-answer {
+            max-height: 800px;
+            padding: 1rem 1.2rem;
+            border-top-color: #ff1a1a40;
+        }
+        .answer-text {
+            white-space: pre-wrap;
+        }
+        .info-link {
+            color: #ff7b7b;
+            text-decoration: none;
+            border-bottom: 1px dashed #ff6666;
+        }
+        code {
+            background: #1a0a0a;
+            padding: 2px 8px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            color: #ffaaaa;
+        }
+        hr {
+            border-color: #ff1a1a30;
+            margin: 10px 0;
+        }
+
+        /* для tools — простой список, тоже можно сворачивать но оставим как есть */
+        .tools-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .tool-item {
+            background: #0f0505;
+            padding: 10px 16px;
+            border-radius: 20px;
+            border-left: 4px solid #ff4d4d;
+        }
+
+        .creator-card {
+            text-align: center;
+            padding: 0.5rem;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 2.5rem;
+            font-size: 0.7rem;
+            color: #4a1a1a;
+        }
+        @media (max-width: 550px) {
+            .section-title {
+                font-size: 1.3rem;
+            }
+            .manual-question {
+                font-size: 1rem;
+                padding: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="hero">
+        <div class="main-title">OSINT TOOL</div>
+        <div class="sub">открытые источники • цифровая гигиена • разведка</div>
+    </div>
+
+    <!-- РАЗДЕЛ MANUALS -->
+    <div class="section">
+        <div class="section-header" data-section="manuals">
+            <span class="section-title">📘 MANUALS</span>
+            <span class="section-icon">▼</span>
+        </div>
+        <div id="manuals-content" class="section-content">
+            <div class="manuals-list">
+                <!-- пункт 1: Докс и сват -->
+                <div class="manual-item">
+                    <div class="manual-question">
+                        <span>1️⃣ Докс и сват: почему не стоит бояться</span>
+                        <span class="arrow">▶</span>
+                    </div>
+                    <div class="manual-answer">
+                        <div class="answer-text">
+                            <strong>Доксинг</strong> — попытка получить личные данные (адрес, телефон, фото). В 2025 году бояться почти не стоит: 80% «доксеров» — боты, соцсети и законы защищают лучше.<br><br>
+                            <strong>Как защититься:</strong><br>
+                            • VPN скрывает местоположение;<br>
+                            • 2FA спасает аккаунты;<br>
+                            • Анонимные почты и приватные аккаунты;<br>
+                            • Менеджер паролей.<br><br>
+                            <strong>Сваттинг</strong> — ложный вызов полиции. Сейчас полиция отслеживает звонки, а злоумышленников вычисляют. Не публикуйте точный адрес, отключайте геометки.<br><br>
+                            <strong>Цифровая гигиена:</strong> обновляйте ПО, проверяйте утечки (Have I Been Pwned), не делитесь лишним.<br><br>
+                            📖 Подробнее: <a href="#" class="info-link" target="_blank">ваш-ссылка-тут</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- пункт 2: Google Dorks -->
+                <div class="manual-item">
+                    <div class="manual-question">
+                        <span>2️⃣ Google Dorks для разведки</span>
+                        <span class="arrow">▶</span>
+                    </div>
+                    <div class="manual-answer">
+                        <div class="answer-text">
+                            Расширенные операторы поиска:<br>
+                            • <code>site:example.com filetype:pdf</code> — поиск PDF на сайте<br>
+                            • <code>intitle:"index of" "backup"</code> — открытые директории<br>
+                            • <code>inurl:login</code> — страницы входа<br>
+                            • <code>cache:url</code> — старая версия страницы<br><br>
+                            ⚠️ Используйте только для анализа своих данных или общедоступных источников.
+                        </div>
+                    </div>
+                </div>
+                <!-- пункт 3: VIN поиск -->
+                <div class="manual-item">
+                    <div class="manual-question">
+                        <span>3️⃣ Поиск по VIN автомобиля</span>
+                        <span class="arrow">▶</span>
+                    </div>
+                    <div class="manual-answer">
+                        <div class="answer-text">
+                            VIN — открытый идентификатор (виден через лобовое стекло).<br>
+                            С его помощью можно узнать:<br>
+                            • марку, модель, год, двигатель;<br>
+                            • отзывные кампании;<br>
+                            • через легальные сервисы (NHTSA, Vindecoderz) — историю ДТП.<br><br>
+                            🚫 Не пытайтесь взламывать закрытые базы — это незаконно.
+                        </div>
+                    </div>
+                </div>
+                <!-- можно добавить ещё пункты -->
+            </div>
+        </div>
+    </div>
+
+    <!-- РАЗДЕЛ TOOLS -->
+    <div class="section">
+        <div class="section-header" data-section="tools">
+            <span class="section-title">🔧 TOOLS</span>
+            <span class="section-icon">▼</span>
+        </div>
+        <div id="tools-content" class="section-content">
+            <div class="tools-grid">
+                <div class="tool-item">🌐 <strong>Google Dorks Cheatsheet</strong> — операторы поиска</div>
+                <div class="tool-item">📧 <strong>Email OSINT</strong> — Hunter.io, Holehe, Emailrep.io</div>
+                <div class="tool-item">👤 <strong>Username search</strong> — Sherlock, WhatsMyName, Maigret</div>
+                <div class="tool-item">🚗 <strong>VIN decode</strong> — NHTSA, Vindecoderz</div>
+                <div class="tool-item">🗺️ <strong>GeoINT</strong> — ExifTool, Google Earth, Pic2Map</div>
+                <div class="tool-item">📦 <strong>Archives</strong> — Wayback Machine, OSINT Framework</div>
+            </div>
+            <hr>
+            <div style="font-size:0.75rem; color:#aa5555; margin-top: 8px;">⚠️ Только публичные данные. Соблюдайте законы.</div>
+        </div>
+    </div>
+
+    <!-- РАЗДЕЛ CREATOR -->
+    <div class="section">
+        <div class="section-header" data-section="creator">
+            <span class="section-title">👤 CREATOR</span>
+            <span class="section-icon">▼</span>
+        </div>
+        <div id="creator-content" class="section-content">
+            <div class="creator-card">
+                <p style="font-size:1.2rem;">🛡️ OSINT-исследователь</p>
+                <p>Сайт создан в образовательных целях: ознакомление с OSINT, цифровой гигиеной и открытыми источниками.</p>
+                <hr>
+                <p>📬 Контакт: <span style="color:#ff7777">creator@osint.example</span><br>
+                🔗 Больше материалов: <a href="#" class="info-link">t.me/osint_neon</a></p>
+                <p style="margin-top:10px; font-size:0.7rem;">Не для незаконного использования</p>
+            </div>
+        </div>
+    </div>
+    <footer>
+        ⚠️ Все мануалы и инструменты — только для ознакомления, анализа своих данных и общедоступных источников.
+    </footer>
+</div>
+
+<script>
+    // 1) управление открытием/закрытием СЕКЦИЙ (manuals, tools, creator)
+    const sections = [
+        { header: document.querySelector('[data-section="manuals"]'), content: document.getElementById('manuals-content') },
+        { header: document.querySelector('[data-section="tools"]'), content: document.getElementById('tools-content') },
+        { header: document.querySelector('[data-section="creator"]'), content: document.getElementById('creator-content') }
+    ];
+
+    sections.forEach(section => {
+        if (!section.header || !section.content) return;
+        section.header.addEventListener('click', (e) => {
+            e.stopPropagation();
+            // закрываем другие секции (опционально, можно аккордеон)
+            sections.forEach(s => {
+                if (s.content !== section.content && s.content.classList.contains('open')) {
+                    s.content.classList.remove('open');
+                }
+            });
+            section.content.classList.toggle('open');
+        });
+    });
+
+    // 2) управление аккордеоном внутри manuals (клик по вопросу -> открыть ответ)
+    const manualItems = document.querySelectorAll('.manual-item');
+    manualItems.forEach(item => {
+        const question = item.querySelector('.manual-question');
+        const answer = item.querySelector('.manual-answer');
+        const arrowSpan = question.querySelector('.arrow');
+        if (!question || !answer) return;
+        
+        question.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isOpen = answer.classList.contains('open-answer');
+            // закрыть все остальные ответы (опционально)
+            manualItems.forEach(other => {
+                const otherAnswer = other.querySelector('.manual-answer');
+                const otherArrow = other.querySelector('.arrow');
+                if (otherAnswer && otherAnswer !== answer && otherAnswer.classList.contains('open-answer')) {
+                    otherAnswer.classList.remove('open-answer');
+                    if (otherArrow) otherArrow.textContent = '▶';
+                }
+            });
+            if (!isOpen) {
+                answer.classList.add('open-answer');
+                if (arrowSpan) arrowSpan.textContent = '▼';
+            } else {
+                answer.classList.remove('open-answer');
+                if (arrowSpan) arrowSpan.textContent = '▶';
+            }
+        });
+    });
+
+    // маленький фикс: чтобы клик внутри ответа не закрывал его
+    document.querySelectorAll('.manual-answer').forEach(ans => {
+        ans.addEventListener('click', (e) => e.stopPropagation());
+    });
+</script>
+</body>
+</html>
