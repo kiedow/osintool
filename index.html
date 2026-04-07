@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Неоновые языки | 11 технологий для разработки</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0a0f1e 0%, #0b1a2e 100%);
+            min-height: 100vh;
+            color: #fff;
+            padding-bottom: 30px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.2rem;
+            margin-bottom: 50px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #00f3ff;
+            text-shadow: 0 0 10px #00f3ff, 0 0 20px #00f3ff;
+            position: relative;
+        }
+
+        h1::after {
+            content: '11 ЯЗЫКОВ И ТЕХНОЛОГИЙ';
+            position: absolute;
+            bottom: -28px;
+            left: 0;
+            right: 0;
+            font-size: 0.9rem;
+            color: #ffff66;
+            text-shadow: none;
+            letter-spacing: 2px;
+            font-weight: normal;
+        }
+
+        .languages-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .language-card {
+            background: rgba(10, 20, 40, 0.85);
+            border: 2px solid #00f3ff;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
+            transition: all 0.2s ease;
+        }
+
+        .language-card:active {
+            border-color: #ffff00;
+            box-shadow: 0 0 20px rgba(255, 255, 0, 0.3);
+        }
+
+        .icon-container {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 50%;
+            border: 1.5px solid #00f3ff;
+            padding: 12px;
+        }
+
+        .icon-container svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 0 5px #00f3ff);
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 1.7rem;
+            margin-bottom: 8px;
+            color: #00f3ff;
+            text-shadow: 0 0 5px rgba(0, 243, 255, 0.5);
+        }
+
+        .short-desc {
+            color: #ddd;
+            line-height: 1.5;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+            border-left: 3px solid #00f3ff;
+            padding-left: 12px;
+        }
+
+        .full-description {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+            opacity: 0;
+            margin-top: 0;
+            color: #ccc;
+            line-height: 1.6;
+            font-size: 0.9rem;
+        }
+
+        .full-description.show {
+            max-height: 2500px;
+            opacity: 1;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(0, 243, 255, 0.3);
+        }
+
+        .full-description p {
+            margin-bottom: 12px;
+        }
+
+        .full-description strong {
+            color: #00f3ff;
+        }
+
+        .full-description ul {
+            margin: 10px 0 15px 25px;
+        }
+
+        .full-description li {
+            margin-bottom: 6px;
+        }
+
+        .toggle-btn {
+            background: rgba(0, 243, 255, 0.2);
+            border: 1px solid #00f3ff;
+            color: #00f3ff;
+            padding: 10px 18px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-top: 15px;
+            display: inline-block;
+            width: 100%;
+            text-align: center;
+            transition: 0.15s ease;
+        }
+
+        .toggle-btn:active {
+            background: #00f3ff;
+            color: #0a0f1e;
+        }
+
+        .resources-section {
+            margin-top: 50px;
+            padding: 25px 15px 15px;
+            border-top: 2px solid rgba(0, 243, 255, 0.4);
+            border-radius: 15px;
+            background: rgba(5, 10, 20, 0.7);
+        }
+
+        .resources-title {
+            text-align: center;
+            font-size: 1.6rem;
+            margin-bottom: 25px;
+            color: #ffff66;
+            text-shadow: 0 0 8px #ffaa00;
+            letter-spacing: 1px;
+        }
+
+        .links-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .resource-link {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid #00f3ff;
+            border-radius: 40px;
+            padding: 8px 18px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: bold;
+            font-size: 0.85rem;
+        }
+
+        .resource-link span {
+            color: #00f3ff;
+        }
+
+        .resource-link:active {
+            border-color: #ffff00;
+            background: rgba(0, 243, 255, 0.1);
+        }
+
+        .neon-border {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00f3ff, #ffff00, #00f3ff, transparent);
+            box-shadow: 0 0 10px #00f3ff;
+            z-index: 1000;
+        }
+
+        .neon-border.bottom {
+            top: auto;
+            bottom: 0;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 35px;
+            font-size: 0.7rem;
+            color: #6688aa;
+        }
+
+        @media (min-width: 768px) {
+            .languages-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 30px;
+            }
+            h1 {
+                font-size: 3rem;
+            }
+            h1::after {
+                font-size: 1rem;
+                bottom: -30px;
+            }
+            .toggle-btn {
+                width: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="neon-border"></div>
+    <div class="neon-border bottom"></div>
+
+    <div class="container">
+        <h1>ПОПУЛЯРНЫЕ ЯЗЫКИ ПРОГРАММИРОВАНИЯ</h1>
+        
+        <div class="languages-grid">
+            <!-- 1. Python -->
+            <div class="language-card">
+                <div class="icon-container">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5c0 .28-.22.5-.5.5h-3c-.28 0-.5-.22-.5-.5v-9c0-.28.22-.5.5-.5h3c.28 0 .5.22.5.5v9zm6 0c0 .28-.22.5-.5.5h-3c-.28 0-.5-.22-.5-.5v-9c0-.28.22-.5.5-.5h3c.28 0 .5.22.5.5v9z" fill="#00f3ff"/>
+                    </svg>
+                </div>
+                <h2>Python</h2>
+                <div class="short-desc">🐍 Простой, мощный, универсальный. Лидер в Data Science и AI.</div>
+                <div class="full-description">
+                    <p><strong>Python</strong> создан Гвидо ван Россумом в 1991 году. Философия: читаемость кода и производительность разработчика.</p>
+                    <p><strong>📌 Основные сферы:</strong> веб-разработка (Django, Flask, FastAPI), Data Science (Pandas, NumPy, Matplotlib), машинное обучение (TensorFlow, PyTorch, Scikit-learn), автоматизация, тестирование, научные вычисления, бэкенд-сервисы, разработка игр (Pygame), кибербезопасность, FinTech.</p>
+                    <p><strong>⚡ Ключевые особенности:</strong> динамическая типизация, автоматическое управление памятью, интерпретируемость, огромная стандартная библиотека, поддержка ООП, функционального и процедурного стилей.</p>
+                    <p><strong>🏢 Где используется:</strong> Google (YouTube, Google Search), Instagram, Spotify, Netflix, Dropbox, Reddit, NASA, CERN.</p>
+                    <p><strong>📚 Популярные библиотеки:</strong> Requests (HTTP), BeautifulSoup (парсинг), Selenium (автоматизация), OpenCV (компьютерное зрение), Django REST Framework (API), Celery (очереди задач), Pytest (тестирование).</p>
+                    <p><strong>💡 Совет:</strong> идеальный первый язык. Огромное сообщество и миллион туториалов.</p>
+                </div>
+                <button class="toggle-btn">📘 Узнать подробнее</button>
+            </div>
+
+            <!-- 2. JavaScript -->
+            <div class="language-card">
+                <div class="icon-container">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M3 3H21V21H3V3Z" stroke="#00f3ff" stroke-width="2"/>
+                        <path d="M9 12L12 15L15 12" stroke="#00f3ff" stroke-width="2"/>
+                    </svg>
+                </div>
+                <h2>JavaScript</h2>
+                <div class="short-desc">⚡ Язык веба. Работает везде: браузер, сервер, мобильные устройства.</div>
+                <div class="full-description">
+                    <p><strong>JavaScript</strong> создан Бренданом Эйхом в 1995 году за 10 дней. Сегодня — самый популярный язык в мире по версии GitHub и Stack Overflow.</p>
+                    <p><strong>📌 Сферы применения:</strong> фронтенд (React, Vue, Angular, Svelte), бэкенд (Node.js + Express/NestJS), мобильные приложения (React Native, Ionic, NativeScript), десктоп (Electron — VS Code, Slack, Discord), игры (Phaser, Three.js), чат-боты, WebGL, машинное обучение (TensorFlow.js), автоматизация.</p>
+                    <p><strong>⚡ Особенности:</strong> асинхронность (Promise, async/await), прототипное наследование, динамическая типизация, событийно-ориентированная модель, первая-класс функции, замыкания.</p>
+                    <p><strong>📦 Экосистема:</strong> npm — крупнейший реестр библиотек (более 2 млн пакетов). Webpack, Vite, ESLint, Prettier, Jest, Vitest.</p>
+                    <p><strong>🏢 Кто использует:</strong> Google (Gmail, Maps), Facebook, Netflix, Uber, PayPal, LinkedIn, eBay, Wikipedia.</p>
+                    <p><strong>🆕 Современный JS (ES6+):</strong> классы, модули (import/export), стрелочные функции, деструктуризация, spread/rest, шаблонные строки, символы, генераторы, прокси.</p>
+                    <p><strong>💡 Совет:</strong> учите современный JS (ES2020+). TypeScript — надстройка для строгой типизации, используется в крупных проектах.</p>
+                </div>
+                <button class="toggle-btn">⚡ Узнать подробнее</button>
+            </div>
+
+            <!-- 3. Java -->
+            <div class="language-card">
+                <div class="icon-container">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <circle cx="12" cy="12" r="10" stroke="#00f3ff" stroke-width="2"/>
+                        <path d="M8 8 L16 16 M16 8 L8 16" stroke="#00f3ff" stroke-width="2"/>
+                    </svg>
+                </div>
+                <h2>Java</h2>
+                <div class="short-desc">☕ Надёжность, масштабируемость, кроссплатформенность. Король корпоративной разработки.</div>
+                <div class="full-description">
+                    <p><strong>Java</strong> создан Джеймсом Гослингом в Sun Microsystems (1995). Принцип WORA: "Write Once, Run Anywhere" благодаря JVM.</p>
+                    <p><strong>📌 Сферы:</strong> корпоративные системы (банки, страховые компании), Android-разработка (Kotlin тоже, но Java основа), веб-сервисы (Spring Boot, Hibernate), Big Data (Hadoop, Apache Spark, Kafka), финансовые платформы, облачные сервисы (AWS, Azure), встроенные системы (SIM-карты, Blu-ray).</p>
+                    <p><strong>⚡ Особенности:</strong> строгая типизация, автоматическая сборка мусора (GC), многопоточность (java.util.concurrent), богатейшая стандартная библиотека, безопасность, переносимость.</p>
+                    <p><strong>🏢 Где используется:</strong> LinkedIn, Netflix, Amazon (бэкенд), eBay, Google (Android), Uber, Spotify, Twitter (переход на Scala, но Java-компоненты остались).</p>
+                    <p><strong>📚 Фреймворки:</strong> Spring (Boot, Security, Data, Cloud), Hibernate, Micronaut, Quarkus, Vert.x, JavaFX (десктоп), Jakarta EE.</p>
+                    <p><strong>💡 Совет:</strong> учите Java 17+ (LTS). Понимание JVM, сборщиков мусора и многопоточности — ключ к высокооплачиваемой работе.</p>
+                </div>
+                <button class="toggle-btn">☕ Узнать подробнее</button>
+            </div>
+
+            <!-- 4. C++ -->
+            <div class="language-card">
+                <div class="icon-container">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M4 4L20 12L4 20V4Z" stroke="#00f3ff" stroke-width="2"/>
+                        <circle cx="12" cy="12" r="3" stroke="#00f3ff" stroke-width="2"/>
+                    </svg>
+                </div>
+                <h2>C++</h2>
+                <div class="short-desc">⚙️ Максимальная производительность. Системное программирование, игры, высоконагруженные сервисы.</div>
+                <div class="full-description">
+                    <p><strong>C++</strong> создан Бьёрном Страуструпом в 1985 году как расширение C с классами. Даёт полный контроль над памятью и железом.</p>
+                    <p><strong>📌 Сферы:</strong> игровые движки (Unreal Engine 5, Unity C++-бэкенд), операционные системы (Windows, Linux, macOS-компоненты), браузеры (Chrome, Firefox, Safari), базы данных (MySQL, PostgreSQL, MongoDB, Redis), высокочастотная торговля (HFT), встраиваемые системы, робототехника, автопилоты, компиляторы, графические движки (Adobe Photoshop, AutoCAD).</p>
+                    <p><strong>⚡ Особенности:</strong> ручное управление памятью (new/delete), шаблоны (метапрограммирование), множественное наследование, RAII, перегрузка операторов, исключения, RTTI.</p>
+                    <p><strong>📚 Современные стандарты:</strong> C++11 (авто, лямбды, умные указатели), C++14, C++17 (filesystem, parallel algorithms), C++20 (концепты, корутины, ranges), C++23.</p>
+                    <p><strong>🏢 Кто использует:</strong> Google (Chromium,搜索引擎), Microsoft (Windows, Office), Facebook (высоконагруженные сервисы), Blizzard, Epic Games, Adobe, SpaceX, Tesla.</p>
+                    <p><strong>💡 Совет:</strong> учите современный C++ (C++17/20), избегайте сырых указателей, используйте RAII и стандартную библиотеку (STL).</p>
+                </div>
+                <button class="toggle-btn">🔥 Узнать подробнее</button>
+            </div>
+
+            <!-- 5. C# -->
+            <div class="language-card">
+                <div class="icon-container">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M4 4H20V20H4V4Z" stroke="#00f3ff" stroke-width="2"/>
+                        <path d="M9 12L15 12M12 9L12 15" stroke="#00f3ff" stroke-width="2"/>
+                    </svg>
+                </div>
+                <h2>C#</h2>
+                <div class="short-desc">🎮 Язык от Microsoft. Игры на Unity, корпоративные приложения, кроссплатформенная разработка.</div>
+                <div class="full-description">
+                    <p><strong>C#</strong> разработан Андерсом Хейлсбергом в Microsoft (2000) как основной язык платформы .NET. Сочетает мощь C++ с простотой Java.</p>
+                    <p><strong>📌 Сферы:</strong> разработка игр (Unity 3D — 70% мобильных игр, Godot), десктоп-приложения (Windows Forms, WPF, MAUI), веб-разработка (ASP.NET Core), облачные сервисы (Azure), микросервисы, мобильные приложения (Xamarin, MAUI), бэкенд для крупных систем.</p>
+                    <p><strong>⚡ Особенности:</strong> строгая типизация, LINQ (языковые интегральные запросы), свойства, делегаты, события, асинхронность (async/await), указатели в unsafe-коде, перегрузка операторов, дженерики.</p>
+                    <p><strong>📚 Современный .NET:</strong> .NET 6/7/8 — кроссплатформенный (Windows, Linux, macOS), быстрый, открытый. Entity Framework Core (ORM), Blazor (SPA на C#), SignalR (real-time).</p>
+                    <p><strong>🏢 Где используется:</strong> Microsoft (Office, Visual Studio), Stack Overflow, Unity Technologies, Epic Games (бэкенд), Intel, NASA, многие банки и биржи.</p>
+                    <p><strong>💡 Совет:</strong> если хотите в геймдев — учите Unity + C#. Для корпоративной разработки — ASP.NET Core и Entity Framework.</p>
+                </div>
+                <button class="toggle-btn">🎮 Узнать подробнее</button>
+            </div>
+
+            <!-- 6. PHP -->
+            <div class="language-card">
+                <div class="icon-container">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <ellipse cx="12" cy="12" rx="10" ry="6" stroke="#00f3ff" stroke-width="2"/>
+                        <path d="M7 8L9 16M17 8L15 16" stroke="#00f3ff" stroke-width="2"/>
+                    </svg>
+                </div>
+                <h2>PHP</h2>
+                <div class="short-desc">🌐 Король бэкенда. 78% всех веб-сайтов работают на PHP (WordPress, Laravel).</div>
+                <div class="full-description">
+                    <p><strong>PHP</strong> (Personal Home Page → PHP: Hypertext Preprocessor) создан Расмусом Лердорфом в 1995 году. Специализированный язык для веб-разработки.</p>
+                    <p><strong>📌 Сферы:</strong> веб-сайты и порталы, CMS (WordPress — 43% всех сайтов, Joomla, Drupal, Bitrix), интернет-магазины (OpenCart, Magento), фреймворки (Laravel, Symfony, CodeIgniter, Yii), API, корпоративные порталы, системы управления контентом.</p>
+                    <p><strong>⚡ Особенности:</strong> простота входа, огромное сообщество, богатая стандартная библиотека, поддержка ООП (с PHP5+), удобная работа с базами данных (PDO, MySQLi), встроенная поддержка сессий и cookies.</p>
+                    <p><strong>📚 Современный PHP 8.x:</strong> JIT-компиляция (ускорение), атрибуты (аннотации), union types, match-выражение, named аргументы, конструкторы в трейтах, улучшенная обработка ошибок.</p>
+                    <p><strong>🏢 Кто использует:</strong> Facebook (сайт и HHVM), Wikipedia, WordPress.com, Etsy, Slack (начальная версия), Baidu, Yahoo, Tumblr.</p>
+                    <p><strong>💡 Совет:</strong> учите PHP 8+ и Laravel — самый популярный фреймворк с огромным спросом на рынке.</p>
+                </div>
+                <button class="toggle-btn">🌐 Узнать подробнее</button>
+            </div>
+
+            <!-- 7. Lua -->
+            <div class="language-card">
+                <div class="icon-container">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" stroke="#00f3ff" stroke-width="2"/>
+                        <path d="M12 8v4l3 3" stroke="#00f3ff" stroke-width="2"/>
+                    </svg>
+                </div>
+                <h2>Lua</h2>
+                <div class="short-desc">🚀 Лёгкий, быстрый, встраиваемый язык. Скриптинг в играх (Roblox, WoW), настройка ПО.</div>
+                <div class="full-description">
+                    <p><strong>Lua</strong> создан в 1993 году в PUC-Rio (Бразилия). Название значит "луна" по-португальски. Проектировался как встраиваемый скриптовый язык.</p>
+                    <p><strong>📌 Сферы:</strong> разработка игр (Roblox Studio — основной язык, World of Warcraft, Garry's Mod, Fari Cry, Baldur's Gate, Civilization V), встраивание в приложения (Adobe Photoshop Lightroom, Wireshark, VLC, Nmap), конфигурация ПО (Awesome WM, Neovim, Redis, Nginx через OpenResty), веб-разработка (OpenResty, Lapis), встраиваемые системы (роутеры, умные устройства).</p>
+                    <p><strong>⚡ Особенности:</strong> сверхлёгкий (ядро ~20КБ), быстрый (один из самых быстрых интерпретируемых языков), простота изучения, динамическая типизация, автоматическое управление памятью (GC), метатаблицы (мощная метапрограммируемость), корутины (лёгкая многозадачность), итераторы.</p>
+                    <p><strong>📚 Популярные движки:</strong> LÖVE (2D-игры), Corona SDK (мобильные игры), Gideros, Solar2D.</p>
+                    <p><strong>🏢 Кто использует:</strong> Roblox Corporation, Blizzard Entertainment, Adobe, Redis Labs, Nginx Inc., многие производители роутеров (Cisco, Linksys).</p>
+                    <p><strong>💡 Совет:</strong> если хотите делать игры в Roblox — Lua обязателен. Для модов в WoW или Minecraft (ComputerCraft) — тоже Lua.</p>
+                </div>
+                <button class="toggle-btn">🚀 Узнать подробнее</button>
+            </div>
+
+            <!-- 8. HTML -->
+            <div class="language-card">
+                <div class="icon-container">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M4 4L6 20L12 22L18 20L20 4H4Z" stroke="#00f3ff" stroke-width="2"/>
+                        <path d="M9 8H15L14 16L12 17.5L10 16L9.5 13" stroke="#00f3ff" stroke-width="2"/>
+                    </svg>
+                </div>
+                <h2>HTML5</h2>
+                <div class="short-desc">🏗️ Основа любого веб-сайта. Структура и семантика веб-страниц.</div>
+                <div class="full-description">
+                    <p><strong>HTML</strong> (HyperText Markup Language) — не язык программирования, а язык разметки. Создан Тимом Бернерсом-Ли в 1991 году. HTML5 — текущая версия (2014).</p>
+                    <p><strong>📌 Что даёт HTML:</strong> структура документа (заголовки, параграфы, списки, таблицы), ссылки, изображения, видео, аудио, формы (поля ввода, кнопки, отправка данных), семантические теги (header, nav, main, article, section, aside, footer), работа с canvas и SVG (графика), хранение данных (localStorage, sessionStorage), геолокация, drag&drop, web workers.</p>
+                    <p><strong>⚡ Ключевые теги:</strong> &lt;div&gt;, &lt;span&gt;, &lt;a&gt;, &lt;img&gt;, &lt;form&gt;, &lt;input&gt;, &lt;button&gt;, &lt;table&gt;, &lt;ul&gt;/&lt;ol&gt;, &lt;video&gt;, &lt;audio&gt;, &lt;canvas&gt;, &lt;svg&gt;, семантические блоки.</p>
+                    <p><strong>📚 Инструменты:</strong> HTML работает вместе с CSS (стили) и JavaScript (интерактивность). Инспектор браузера (F12) — лучший друг.</p>
+                    <p><strong>🏢 Кто использует:</strong> все веб-сайты в мире. Без HTML нет интернета в привычном виде.</p>
+                    <p><strong>💡 Совет:</strong> учите семантический HTML5 (правильные теги по смыслу). Это важно для SEO (поисковой оптимизации) и доступности (для людей с ограничениями).</p>
+                </div>
+                <button class="toggle-btn">🏗️ Узнать подробнее</button>
+            </div>
+
+            <!-- 9. CSS -->
+            <div class="language-card">
+                <div class="icon-container">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M4 4L6 20L12 21.5L18 20L20 4H4Z" stroke="#00f3ff" stroke-width="2"/>
+                        <path d="M8 8H16L15 13H9L8.5 16H15.5" stroke="#00f3ff" stroke-width="2"/>
+                    </svg>
+                </div>
+                <h2>CSS3</h2>
+                <div class="short-desc">🎨 Внешний вид и анимации. Превращает структуру в красивые интерфейсы.</div>
+                <div class="full-description">
+                    <p><strong>CSS</strong> (Cascading Style Sheets) — язык стилей для HTML. CSS3 — текущая версия с модулями анимаций, адаптивности, флексов, гридов.</p>
+                    <p><strong>📌 Возможности:</strong> цвета и градиенты, шрифты (Google Fonts, system fonts), отступы (margin/padding), рамки (border, border-radius), позиционирование (relative, absolute, fixed, sticky), Flexbox (идеальное выравнивание), Grid Layout (сетки любой сложности), анимации (keyframes, transition, transform), адаптивный дизайн (@media запросы), переменные (custom properties), темная/светлая темы, псевдоклассы (:hover, :active, :nth-child).</p>
+                    <p><strong>⚡ Современные фишки:</strong> container queries (адаптация компонентов), subgrid, has(), :is(), :where(), логические свойства, @scope, @layer (каскадные слои).</p>
+                    <p><strong>📚 Фреймворки:</strong> Bootstrap, Tailwind CSS, Foundation, Materialize, Bulma, UIKit. Препроцессоры: SASS/SCSS, LESS, PostCSS.</p>
+                    <p><strong>🏢 Кто использует:</strong> все веб-разработчики. Даже самые простые сайты используют CSS.</p>
+                    <p><strong>💡 Совет:</strong> сначала выучите Flexbox и Grid — это 80% всех задач по вёрстке. Затем анимации и адаптивность.</p>
+                </div>
+                <button class="toggle-btn">🎨 Узнать подробнее</button>
+            </div>
+
+            <!-- 10. C -->
+            <div class="language-card">
+                <div class="icon-container">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M4 4L20 12L4 20V4Z" stroke="#00f3ff" stroke-width="2"/>
+                        <line x1="8" y1="8" x2="16" y2="16" stroke="#00f3ff" stroke-width="2"/>
+                    </svg>
+                </div>
+                <h2>C (Си)</h2>
+                <div class="short-desc">🔧 Основа всего. Операционные системы, драйверы, микроконтроллеры — всё на C.</div>
+                <div class="full-description">
+                    <p><strong>C</strong> создан Деннисом Ритчи в Bell Labs (1972). Прародитель C++, C#, Java, JavaScript, Go, Rust и многих других. Стандарт ANSI C (C89/C90), затем C99, C11, C17, C23.</p>
+                    <p><strong>📌 Сферы:</strong> операционные системы (ядро Linux, Windows, macOS, FreeBSD), драйверы устройств, встраиваемые системы (микроконтроллеры, Arduino, STM32), компиляторы, интерпретаторы, базы данных (SQLite, PostgreSQL ядро), сетевое ПО, игровые движки (низкий уровень), высокопроизводительные вычисления (HPC), робототехника.</p>
+                    <p><strong>⚡ Особенности:</strong> максимальная производительность, прямой доступ к памяти (указатели), ручное управление памятью (malloc/free), низкоуровневый контроль, минималистичный синтаксис, переносимость (почти на любую архитектуру), предсказуемое поведение.</p>
+                    <p><strong>📚 Ключевые концепции:</strong> указатели, арифметика указателей, динамическое выделение памяти, препроцессор (#define, #include), структурное программирование, функции, массивы, структуры (struct), union, битовые поля.</p>
+                    <p><strong>🏢 Где используется:</strong> ядра всех ОС, базы данных, компиляторы (GCC, Clang, MSVC), интерпретаторы (Python, Ruby, PHP написаны на C), встраиваемые системы в автомобилях, медицинском оборудовании, космических аппаратах.</p>
+                    <p><strong>💡 Совет:</strong> знание C — это фундамент. Понимание указателей и управления памятью сделает вас сильным программистом на любом низкоуровневом языке.</p>
+                </div>
+                <button class="toggle-btn">🔧 Узнать подробнее</button>
+            </div>
+
+            <!-- 11. Unity 3D -->
+            <div class="language-card">
+                <div class="icon-container">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <polygon points="12,2 22,7 22,17 12,22 2,17 2,7 12,2" stroke="#00f3ff" stroke-width="2"/>
+                        <circle cx="12" cy="12" r="3" stroke="#00f3ff" stroke-width="2"/>
+                    </svg>
+                </div>
+                <h2>Unity 3D</h2>
+                <div class="short-desc">🎮 Лидер среди игровых движков. 70% мобильных игр сделаны на Unity + C#.</div>
+                <div class="full-description">
+                    <p><strong>Unity</strong> — кроссплатформенный игровой движок, созданный Unity Technologies (2005). Поддерживает 2D, 3D, AR/VR. Основной язык — C#.</p>
+                    <p><strong>📌 Что можно сделать:</strong> мобильные игры (iOS, Android), ПК-игры, консольные игры (PlayStation, Xbox, Nintendo Switch), веб-игры (WebGL), AR/VR-приложения (ARKit, ARCore, Oculus, HTC Vive), симуляторы, интерактивные инсталляции, архитектурная визуализация, обучающие приложения, анимация, кино (фильм "Гемини" — Unity).</p>
+                    <p><strong>⚡ Ключевые компоненты:</strong> физика (NVIDIA PhysX), рендеринг (Universal RP, High-Definition RP), анимации (Mecanim), частицы (VFX Graph), освещение (Lightmaps, Realtime GI), аудио (Audio Mixer), UI Canvas, Asset Store (тысячи готовых ассетов), Addressables (асинхронная загрузка), Timeline (кат-сцены), Shader Graph (визуальные шейдеры).</p>
+                    <p><strong>📚 Известные игры на Unity:</strong> Genshin Impact, Among Us, Cuphead, Hollow Knight, Pokémon GO, Beat Saber, Fall Guys, Ori and the Blind Forest, Hearthstone (начальная версия), Subnautica, Escape from Tarkov (частично), Cities: Skylines.</p>
+                    <p><strong>🏢 Кто использует:</strong> Ubisoft, Electronic Arts, Blizzard (Hearthstone), Niantic (Pokémon GO), Microsoft (Minecraft Earth), Wizards of the Coast, многие инди-студии и крупные компании.</p>
+                    <p><strong>💡 Совет:</strong> начните с C# (синтаксис похож на Java). Пройдите курсы "Unity Learn" (официальные и бесплатные). Изучите компонентный подход, префабы, корутины, ScriptableObject.</p>
+                </div>
+                <button class="toggle-btn">🎮 Узнать подробнее</button>
+            </div>
+        </div>
+
+        <!-- Блок ссылок -->
+        <div class="resources-section">
+            <div class="resources-title">🌐 Официальные ресурсы и документация</div>
+            <div class="links-grid">
+                <a href="https://www.python.org/" class="resource-link" target="_blank"><span>🐍 Python.org</span></a>
+                <a href="https://www.java.com/ru/" class="resource-link" target="_blank"><span>☕ Java.com</span></a>
+                <a href="https://learn.javascript.ru/" class="resource-link" target="_blank"><span>📜 JavaScript (RU)</span></a>
+                <a href="https://metanit.com/cpp/tutorial/" class="resource-link" target="_blank"><span>⚙️ C++ Metanit</span></a>
+                <a href="https://learn.microsoft.com/ru-ru/dotnet/csharp/" class="resource-link" target="_blank"><span>🎮 C# Документация</span></a>
+                <a href="https://www.php.net/manual/ru/" class="resource-link" target="_blank"><span>🌐 PHP.net</span></a>
+                <a href="https://www.lua.org/manual/5.4/ru/" class="resource-link" target="_blank"><span>🚀 Lua.org</span></a>
+                <a href="https://developer.mozilla.org/ru/docs/Web/HTML" class="resource-link" target="_blank"><span>🏗️ HTML5 MDN</span></a>
+                <a href="https://developer.mozilla.org/ru/docs/Web/CSS" class="resource-link" target="_blank"><span>🎨 CSS MDN</span></a>
+                <a href="https://learn.unity.com/" class="resource-link" target="_blank"><span>🎮 Unity Learn</span></a>
+            </div>
+            <footer>💡 Нажмите на кнопку, чтобы раскрыть полную информацию. Неоновый гид по 11 технологиям.</footer>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.language-card').forEach(card => {
+            const btn = card.querySelector('.toggle-btn');
+            const fullDesc = card.querySelector('.full-description');
+            if (!btn || !fullDesc) return;
+            
+            // Начальное состояние: скрыто
+            fullDesc.classList.remove('show');
+            
+            // Сопоставляем текст кнопки в зависимости от языка
+            const langName = card.querySelector('h2')?.innerText || '';
+            let openText = '📘 Узнать подробнее';
+            let closeText = '📖 Скрыть информацию';
+            
+            if (langName === 'C#') openText = '🎮 Узнать подробнее';
+            else if (langName === 'PHP') openText = '🌐 Узнать подробнее';
+            else if (langName === 'Lua') openText = '🚀 Узнать подробнее';
+            else if (langName === 'HTML5') openText = '🏗️ Узнать подробнее';
+            else if (langName === 'CSS3') openText = '🎨 Узнать подробнее';
+            else if (langName === 'C (Си)') openText = '🔧 Узнать подробнее';
+            else if (langName === 'Unity 3D') openText = '🎮 Узнать подробнее';
+            
+            btn.textContent = openText;
+            
+            btn.addEventListener('click', () => {
+                const isOpen = fullDesc.classList.contains('show');
+                if (isOpen) {
+                    fullDesc.classList.remove('show');
+                    btn.textContent = openText;
+                } else {
+                    fullDesc.classList.add('show');
+                    btn.textContent = closeText;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
